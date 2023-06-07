@@ -89,7 +89,7 @@ def clean_water_level_data(raw_data: list[str]) -> list[(str, float)]:
 
     return map, all_dates
 
-def stuff(rain_data, water_level_data):
+def split_data(rain_data, water_level_data):
     # Basically there is an issue with the data points. Some dates do not have data, so we need to remove those dates from the data set
     # This way we have the same number of data points for both data sets
     new_map = {}
@@ -107,12 +107,24 @@ def stuff(rain_data, water_level_data):
         if date not in new_map.keys():
             del rain_copy[date]
 
+    d1 = dict(list(rain_copy.items())[len(rain_copy)//5:])
+    d2 = dict(list(rain_copy.items())[:int(len(rain_copy)*0.8)])
+    print(d2)
+    print(len(d2))
+    print(len(d2) + len(d1))
+
+    print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+    print(rain_copy)
+
     data = pd.DataFrame({'precipitation': rain_copy.values(), 'water_level': map_copy.values()}, index=map_copy.keys())
     print(data)
 
     # Assuming your data is stored in a DataFrame named 'data'
     water_level_data = data['water_level']
 
+    return data
+
+def calculate_pacf(data):
     # Calculate PACF
     pacf_values = pacf(water_level_data, nlags=10)
 
@@ -136,7 +148,6 @@ def stuff(rain_data, water_level_data):
     # plt.title('Partial Autocorrelation Function (PACF)')
     # plt.show()
 
-    return data
 
 def moreStuff(data):
     X = data['precipitation'].values.reshape(-1, 1)
@@ -166,13 +177,13 @@ if __name__ == '__main__':
 
     water_level_data, all_dates = clean_water_level_data(raw_water_level_data)
 
-    data = stuff(rain_data, water_level_data)
+    training_data, testing_data = split_data(rain_data, water_level_data)
 
-    moreStuff(data)
+    # moreStuff(data)
 
-    # Plot the Rainfall data
-    # plot_data(rain_data.keys(), rain_data.values(), title='Rainfall', y_label='Rainfall (inches)')
+    # # Plot the Rainfall data
+    plot_data(rain_data.keys(), rain_data.values(), title='Rainfall', y_label='Rainfall (inches)')
 
-    # Plot the Water Level data
-    # plot_data(all_dates.keys(), all_dates.values(), title='Water Level', y_label='Water Level (ft)')
+    # # Plot the Water Level data
+    plot_data(all_dates.keys(), all_dates.values(), title='Water Level', y_label='Water Level (ft)')
 
