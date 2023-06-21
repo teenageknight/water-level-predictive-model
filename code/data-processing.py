@@ -126,57 +126,6 @@ def sync_values(rain_data, water_level_data):
 
     return data
 
-    # rain_data_filtered = [
-    #     item
-    #     for item in deduplicated_rain_data
-    #     if item[0] in [sublist[0] for sublist in deduplicated_water_level_data]
-    # ]
-    # print("Halfway there")
-    # water_level_data_filtered = [
-    #     item
-    #     for item in deduplicated_water_level_data
-    #     if item[0] in [sublist[0] for sublist in deduplicated_rain_data]
-    # ]
-
-
-def split_data(rain_data, water_level_data):
-    # Basically there is an issue with the data points. Some dates do not have data, so we need to remove those dates from the data set
-    # This way we have the same number of data points for both data sets
-    new_map = {}
-    for i in water_level_data:
-        date_formatted = datetime.strptime(i, "%Y-%m-%d").strftime("%-m/%-d/%y")
-        new_map[date_formatted] = np.mean(water_level_data[i])
-
-    map_copy = new_map.copy()
-    for date in new_map:
-        if date not in rain_data.keys():
-            del map_copy[date]
-
-    rain_copy = rain_data.copy()
-    for date in rain_data:
-        if date not in new_map.keys():
-            del rain_copy[date]
-
-    d1 = dict(list(rain_copy.items())[len(rain_copy) // 5 :])
-    d2 = dict(list(rain_copy.items())[: int(len(rain_copy) * 0.8)])
-    print(d2)
-    print(len(d2))
-    print(len(d2) + len(d1))
-
-    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    print(rain_copy)
-
-    data = pd.DataFrame(
-        {"precipitation": rain_copy.values(), "water_level": map_copy.values()},
-        index=map_copy.keys(),
-    )
-    print(data)
-
-    # Assuming your data is stored in a DataFrame named 'data'
-    water_level_data = data["water_level"]
-
-    return data
-
 
 def calculate_pacf(data):
     # Calculate PACF
@@ -241,23 +190,3 @@ if __name__ == "__main__":
         rows.append([i, data[i][0], data[i][1]])
 
     helpers.write_csv_file("../data/combined_data.csv", rows, ["date", "rain", "water"])
-
-    # training_data, testing_data = split_data(rain_data, water_level_data)
-
-    # moreStuff(data)
-
-    # # Plot the Rainfall data
-    # plot_data(
-    #     rain_data.keys(),
-    #     rain_data.values(),
-    #     title="Rainfall",
-    #     y_label="Rainfall (inches)",
-    # )
-
-    # # Plot the Water Level data
-    # plot_data(
-    #     all_dates.keys(),
-    #     all_dates.values(),
-    #     title="Water Level",
-    #     y_label="Water Level (ft)",
-    # )
