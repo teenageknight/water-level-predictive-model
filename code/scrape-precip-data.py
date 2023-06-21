@@ -1,8 +1,9 @@
 import requests
 from datetime import datetime, timedelta
 import time
-import csv
+from helpers import Helpers
 
+helpers = Helpers()
 
 startDate = 20071005
 endDate = 20230529
@@ -53,13 +54,7 @@ for i in range(186):
     currentDate = currentDateIncrement.strftime(date_format)
 
 
-# Write the results to a CSV file
-with open("../data/rain_data_hourly.csv", "w", encoding="UTF8") as f:
-    writer = csv.writer(f)
-
-    writer.writerow(fieldnames)
-
-    writer.writerows(data)
+helpers.write_csv_file("../data/rain_data_hourly.csv", data, fieldnames)
 
 
 print("Completed!")

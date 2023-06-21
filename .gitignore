@@ -3,3 +3,4 @@ water-level-venv/
 .DS_Store
 .vscode/
 code/API_KEY.txt
+*__pycache__/
