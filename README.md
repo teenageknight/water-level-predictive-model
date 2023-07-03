@@ -9,10 +9,10 @@ I will be using the data from the USGS website. The data is collected from a gau
 Here is a sample of the data breakdowns:
 
 Histogram of Data
-![]()
+![Histogram of Data](https://raw.githubusercontent.com/teenageknight/water-level-predictive-model/main/pics/all_data_histogram.png)
 
 All Data
-![]()
+![All Data](https://raw.githubusercontent.com/teenageknight/water-level-predictive-model/main/pics/all_data.png)
 
 LSTM Model Output
-![]()
+![LSTM](https://raw.githubusercontent.com/teenageknight/water-level-predictive-model/main/pics/lstm_results_1.png)
